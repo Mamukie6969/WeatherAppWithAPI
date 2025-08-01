@@ -1,7 +1,7 @@
 async function getWeather() {
     const city = document.getElementById('cityInput').value.trim();
     const apiKey = '3a279c37b13341a292472944240209';
-    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(city)}&aqi=no`;
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${encodeURIComponent(city)}&days=7&aqi=no&alerts=no`;
 
     try {
         const response = await fetch(url);
@@ -9,13 +9,22 @@ async function getWeather() {
 
         if (data.error) throw new Error(data.error.message);
 
-        const temp = data.current.temp_c;
-        const desc = data.current.condition.text;
+        const forecast = data.forecast.forecastday;
+        let output = `<h2>📍 Weather in ${data.location.name}</h2>`;
 
-        document.getElementById('weatherResult').innerHTML =
-            `🌡️ ${temp}°C<br>🌥️ ${desc}`;
+        forecast.forEach(day => {
+            output += `
+                <div style="margin-bottom: 10px;">
+                    <h4>📅 ${day.date}</h4><h5>
+                    🌤️ ${day.day.condition.text}<h5>
+                    🌡️ ${day.day.avgtemp_c}°C (Min: ${day.day.mintemp_c}°C, Max: ${day.day.maxtemp_c}°C)
+                </div>
+            `;
+        });
+
+        document.getElementById('weatherResult').innerHTML = output;
+
     } catch (error) {
-        document.getElementById('weatherResult').innerHTML =
-            `❌ ${error.message}`;
+        document.getElementById('weatherResult').innerHTML = `❌ ${error.message}`;
     }
 }
