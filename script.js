@@ -14,12 +14,13 @@ async function getWeather() {
 
         forecast.forEach(day => {
             output += `
-                <div style="margin-bottom: 10px;">
-                    <h4>📅 ${day.date}</h4><h5>
-                    🌤️ ${day.day.condition.text}<h5>
-                    🌡️ ${day.day.avgtemp_c}°C (Min: ${day.day.mintemp_c}°C, Max: ${day.day.maxtemp_c}°C)
-                </div>
-            `;
+    <div style="margin-bottom: 10px;">
+        <h4>📅 ${day.date}</h4>
+        <h5>🌤️ ${day.day.condition.text}</h5>
+        <h5>🌡️ ${day.day.avgtemp_c}°C (Min: ${day.day.mintemp_c}°C, Max: ${day.day.maxtemp_c}°C)</h5>
+    </div>
+`;
+
         });
 
         document.getElementById('weatherResult').innerHTML = output;
